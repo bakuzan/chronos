@@ -32,10 +32,12 @@ async function run() {
     )
     .option('-m, --month <month>', `Month of data to pull`, myParseInt)
     .option('-d, --day <day>', `Day of data to pull`, myParseInt)
+    .option('-l, --loop', `Loop through days for a year`, false)
     .parse(process.argv);
 
   const options = program.opts() as ChronosOptions;
-  debug('Options: ', options);
+  debug('Starting with Options: ', options);
+
   await processor(options);
 
   debug(`Process Complete.`);

@@ -2,11 +2,66 @@ import db from '../database';
 
 import { ChronosOptions } from '../constants/ChronosOptions';
 import { WikiEvent, WikiResponse } from '../types/WikiResponse';
+import { HistoryEvent } from '../types/HistoryEvent';
+import { HistoryEventRelatedLink } from '../types/HistoryEventRelatedLink';
+
+function clearExistingRecords(month: number, day: number) {
+  // Check database for existing records
+  const historyEvents: HistoryEvent[] = db
+    .prepare(
+      `SELECT * 
+         FROM HistoryEvent 
+        WHERE month = @month 
+          AND day = @day`
+    )
+    .all({ month, day });
+
+  if (!historyEvents.length) {
+    return; // No events, nothing to do.
+  }
+
+  const historyEventIds = historyEvents.map((x) => x.id);
+  const questionMarks = historyEventIds.map(() => '?').join(',');
+  const historyEventRelatedLinks: HistoryEventRelatedLink[] = db
+    .prepare(
+      `SELECT * 
+         FROM HistoryEventRelatedLink
+        WHERE historyEventId IN (${questionMarks})`
+    )
+    .all(historyEventIds);
+
+  // Delete existing records so they can be reinserted.
+  const deleteLink = db.prepare(
+    `DELETE FROM HistoryEventRelatedLink 
+      WHERE historyEventId = @historyEventId
+        AND relatedLinkId = @relatedLinkId`
+  );
+  const deleteHistoryEvent = db.prepare(
+    `DELETE FROM HistoryEvent WHERE id = ?`
+  );
+
+  const deleteExistingRecords = db.transaction(
+    (links: HistoryEventRelatedLink[], eventIds: number[]) => {
+      for (const herl of links) {
+        deleteLink.run(herl);
+      }
+
+      for (const heId of eventIds) {
+        deleteHistoryEvent.run(heId);
+      }
+    }
+  );
+
+  deleteExistingRecords(historyEventRelatedLinks, historyEventIds);
+}
 
 export default function processEvents(
-  opts: ChronosOptions,
+  month: number,
+  day: number,
   data: WikiResponse
 ) {
+  clearExistingRecords(month, day);
+
   const insertHistoryEvent = db.prepare(`
         INSERT INTO HistoryEvent(year,month,day,description) 
         VALUES(@year,@month,@day,@description)`);
@@ -22,9 +77,9 @@ export default function processEvents(
   const insertEvents = db.transaction((events: WikiEvent[]) => {
     for (const ev of events) {
       const resultHE = insertHistoryEvent.run({
-        year: Number(ev.year),
-        month: opts.month,
-        day: opts.day,
+        year: ev.year,
+        month,
+        day,
         description: ev.description
       });
 
@@ -55,5 +110,7 @@ export default function processEvents(
     }
   });
 
-  insertEvents(data.events);
+  insertEvents(
+    data.events.filter((ev) => ev.description && ev.description.trim())
+  );
 }

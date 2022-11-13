@@ -4,4 +4,5 @@ export interface ChronosOptions {
   dataType: DataType;
   month: number;
   day: number;
+  loop: boolean;
 }
