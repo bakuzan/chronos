@@ -7,7 +7,7 @@
     "strict": true,
     "skipLibCheck": true,
     "noImplicitAny": true,
-    "outDir": "./bin"
+    "outDir": "./dist"
   },
-  "include": ["./tools/**/*"]
+  "include": ["./server/**/*"]
 }
