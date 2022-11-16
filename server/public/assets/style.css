@@ -1,3 +1,43 @@
-.title {
-  color: #66023c;
+:root {
+  --theme-background-colour: #66023c;
+  --theme-colour-colour: #fff;
+}
+
+body {
+  font-size: 18px;
+  font-family: 'Lucida Console', 'Consolas', monospace;
+  min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  height: 100%;
+  padding: 20px;
+}
+
+.site-title {
+  background: var(--theme-background-colour);
+  color: var(--theme-colour-colour);
+  padding: 20px;
+  margin-top: 0;
+}
+
+.events {
+  list-style-type: none;
+}
+
+.event {
+  display: flex;
+  padding: 5px 0;
+  margin-bottom: 16px;
+}
+
+.event__year {
+  display: flex;
+  min-width: 60px;
+  padding: 5px;
+  background-color: var(--theme-background-colour);
+  color: var(--theme-colour-colour);
+  margin-right: 10px;
+  box-sizing: border-box;
 }

@@ -2,6 +2,10 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 
+import { getEventsForDate } from './service';
+import { getOrdinalSuffix } from './utils';
+import { monthNames } from './constants';
+
 dotenv.config();
 
 const app: Express = express();
@@ -13,7 +17,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Endpoints
 app.get('/', (req: Request, res: Response) => {
-  res.render('index', { title: 'Chronos', message: 'Express+Pug' });
+  const today = new Date();
+  const date = today.getDate();
+  const dateWithOrd = getOrdinalSuffix(date);
+  const monthIndex = today.getMonth();
+  const monthName = monthNames[monthIndex];
+
+  const events = getEventsForDate(monthIndex + 1, date);
+
+  res.render('index', {
+    title: 'On this day',
+    header: `On ${dateWithOrd} ${monthName}`,
+    events
+  });
 });
 
 // Start the server...

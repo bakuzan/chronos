@@ -1,6 +1,5 @@
 import db from '../database';
 
-import { ChronosOptions } from '../constants/ChronosOptions';
 import { WikiEvent, WikiResponse } from '../types/WikiResponse';
 import { HistoryEvent } from '../types/HistoryEvent';
 import { HistoryEventRelatedLink } from '../types/HistoryEventRelatedLink';
