@@ -10,7 +10,7 @@ function clearExistingRecords(month: number, day: number) {
   const events: HistoryEvent[] = db
     .prepare(
       `SELECT * 
-         FROM HistoryEvent 
+         FROM Death 
         WHERE month = @month 
           AND day = @day`
     )
@@ -25,18 +25,18 @@ function clearExistingRecords(month: number, day: number) {
   const eventRelatedLinks: HistoryEventRelatedLink[] = db
     .prepare(
       `SELECT * 
-         FROM HistoryEventRelatedLink
-        WHERE historyEventId IN (${questionMarks})`
+         FROM DeathRelatedLink
+        WHERE deathId IN (${questionMarks})`
     )
     .all(eventIds);
 
   // Delete existing records so they can be reinserted.
   const deleteLink = db.prepare(
-    `DELETE FROM HistoryEventRelatedLink 
-      WHERE historyEventId = @historyEventId
+    `DELETE FROM DeathRelatedLink 
+      WHERE deathId = @deathId
         AND relatedLinkId = @relatedLinkId`
   );
-  const deleteEvent = db.prepare(`DELETE FROM HistoryEvent WHERE id = ?`);
+  const deleteEvent = db.prepare(`DELETE FROM Death WHERE id = ?`);
 
   const deleteExistingRecords = db.transaction(
     (links: HistoryEventRelatedLink[], evIds: number[]) => {
@@ -61,11 +61,11 @@ export default function processEvents(
   clearExistingRecords(month, day);
 
   const insertEvent = db.prepare(`
-        INSERT INTO HistoryEvent(year,month,day,description) 
+        INSERT INTO Death(year,month,day,description) 
         VALUES(@year,@month,@day,@description)`);
 
   const insertEventRelatedLink = db.prepare(`
-        INSERT INTO HistoryEventRelatedLink(historyEventId, relatedLinkId) 
+        INSERT INTO DeathRelatedLink(deathId, relatedLinkId) 
         VALUES(@eventId,@relatedLinkId)`);
 
   baseProcessor(month, day, events, insertEvent, insertEventRelatedLink);

@@ -7,6 +7,8 @@ import { WikiResponse } from '../types/WikiResponse';
 import { debug } from '../utils/logger';
 import getNextDateValues from '../utils/getNextDateValues';
 
+import processBirths from './processBirths';
+import processDeaths from './processDeaths';
 import processEvents from './processEvents';
 
 const DATA_URL_TEMPLATE =
@@ -26,7 +28,7 @@ async function pullDownData(dataType: DataType, month: number, day: number) {
     .replace('{day}', day.toString());
 
   const response = await got(targetUrl).json();
-  return response as WikiResponse;
+  return response as WikiResponse<typeof dataType>;
 }
 
 export default async function processor(opts: ChronosOptions) {
@@ -38,9 +40,16 @@ export default async function processor(opts: ChronosOptions) {
     const data = await pullDownData(opts.dataType, month, day);
 
     switch (opts.dataType) {
-      case 'events':
-        processEvents(month, day, data);
+      case 'births':
+        processBirths(month, day, data.births);
         break;
+      case 'deaths':
+        processDeaths(month, day, data.deaths);
+        break;
+      case 'events':
+        processEvents(month, day, data.events);
+        break;
+
       default:
         throw new Error(
           `No implementation for Mode : ${opts.dataType} was found.`

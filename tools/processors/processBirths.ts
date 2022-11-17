@@ -10,7 +10,7 @@ function clearExistingRecords(month: number, day: number) {
   const events: HistoryEvent[] = db
     .prepare(
       `SELECT * 
-         FROM HistoryEvent 
+         FROM Birth 
         WHERE month = @month 
           AND day = @day`
     )
@@ -25,18 +25,18 @@ function clearExistingRecords(month: number, day: number) {
   const eventRelatedLinks: HistoryEventRelatedLink[] = db
     .prepare(
       `SELECT * 
-         FROM HistoryEventRelatedLink
-        WHERE historyEventId IN (${questionMarks})`
+         FROM BirthRelatedLink
+        WHERE birthId IN (${questionMarks})`
     )
     .all(eventIds);
 
   // Delete existing records so they can be reinserted.
   const deleteLink = db.prepare(
-    `DELETE FROM HistoryEventRelatedLink 
-      WHERE historyEventId = @historyEventId
+    `DELETE FROM BirthRelatedLink 
+      WHERE birthId = @birthId
         AND relatedLinkId = @relatedLinkId`
   );
-  const deleteEvent = db.prepare(`DELETE FROM HistoryEvent WHERE id = ?`);
+  const deleteEvent = db.prepare(`DELETE FROM Birth WHERE id = ?`);
 
   const deleteExistingRecords = db.transaction(
     (links: HistoryEventRelatedLink[], evIds: number[]) => {
@@ -53,7 +53,7 @@ function clearExistingRecords(month: number, day: number) {
   deleteExistingRecords(eventRelatedLinks, eventIds);
 }
 
-export default function processEvents(
+export default function processDeaths(
   month: number,
   day: number,
   events: WikiEvent[]
@@ -61,11 +61,11 @@ export default function processEvents(
   clearExistingRecords(month, day);
 
   const insertEvent = db.prepare(`
-        INSERT INTO HistoryEvent(year,month,day,description) 
+        INSERT INTO Birth(year,month,day,description) 
         VALUES(@year,@month,@day,@description)`);
 
   const insertEventRelatedLink = db.prepare(`
-        INSERT INTO HistoryEventRelatedLink(historyEventId, relatedLinkId) 
+        INSERT INTO BirthRelatedLink(birthId, relatedLinkId) 
         VALUES(@eventId,@relatedLinkId)`);
 
   baseProcessor(month, day, events, insertEvent, insertEventRelatedLink);

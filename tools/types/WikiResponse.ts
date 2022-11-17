@@ -1,3 +1,5 @@
+import { DataType } from '../constants/DataType';
+
 export interface WikipediaLink {
   title: string;
   wikipedia: string;
@@ -9,8 +11,7 @@ export interface WikiEvent {
   wikipedia: WikipediaLink[];
 }
 
-export interface WikiResponse {
+export type WikiResponse<propName extends DataType> = {
   wikipedia: string;
   date: string;
-  events: WikiEvent[];
-}
+} & { [key in propName]: WikiEvent[] };

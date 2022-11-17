@@ -2,7 +2,9 @@ node_modules
 lib
 bin
 dist
+iisnode
 *.txt
 *.db
 *.sqlite
 .env
+web.config
