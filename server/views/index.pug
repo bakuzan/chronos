@@ -2,4 +2,21 @@ extends layout
 
 block content
     h2= header
-    include events.pug
+    div.tab-collection
+        input(class='tab-control', id='tab1', type='radio', name='tabs',aria-controls='events', checked)
+        label(class='tab-button', for='tab1') Events
+
+        input(class='tab-control', id='tab2', type='radio', name='tabs',aria-controls='births')
+        label(class='tab-button', for='tab2') Births
+
+        input(class='tab-control', id='tab3', type='radio', name='tabs',aria-controls='deaths')
+        label(class='tab-button', for='tab3') Deaths
+
+        div.tab-panels
+            include events.pug
+            section.tab.event-tab#events
+                +list_events(events)
+            section.tab.birth-tab#births
+                +list_events(births)
+            section.tab.death-tab#deaths
+                +list_events(deaths)

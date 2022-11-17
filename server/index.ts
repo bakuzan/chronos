@@ -2,7 +2,11 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 
-import { getEventsForDate } from './service';
+import {
+  getBirthsForDate,
+  getDeathsForDate,
+  getEventsForDate
+} from './service';
 import { getOrdinalSuffix } from './utils';
 import { monthNames } from './constants';
 
@@ -22,12 +26,17 @@ app.get('/', (req: Request, res: Response) => {
   const dateWithOrd = getOrdinalSuffix(date);
   const monthIndex = today.getMonth();
   const monthName = monthNames[monthIndex];
+  const month = monthIndex + 1;
 
-  const events = getEventsForDate(monthIndex + 1, date);
+  const births = getBirthsForDate(month, date);
+  const deaths = getDeathsForDate(month, date);
+  const events = getEventsForDate(month, date);
 
   res.render('index', {
     title: 'On this day',
     header: `On ${dateWithOrd} ${monthName}`,
+    births,
+    deaths,
     events
   });
 });

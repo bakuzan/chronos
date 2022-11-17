@@ -1,6 +1,8 @@
 :root {
   --theme-background-colour: #66023c;
   --theme-colour-colour: #fff;
+
+  --tab-control-colour: #282c35;
 }
 
 body {
@@ -22,6 +24,65 @@ main {
   margin-top: 0;
 }
 
+/* tab styles */
+.tab-collection > input[type='radio'] {
+  position: absolute;
+  left: -200vw;
+}
+
+.tab-collection .tab {
+  display: none;
+}
+
+.tab-collection > input:first-child:checked ~ .tab-panels > .tab:first-child,
+.tab-collection > input:nth-child(3):checked ~ .tab-panels > .tab:nth-child(2),
+.tab-collection > input:nth-child(5):checked ~ .tab-panels > .tab:nth-child(3) {
+  display: block;
+}
+
+.tab-collection > label {
+  position: relative;
+  display: inline-block;
+  padding: 15px 15px 25px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.tab-collection > label::after {
+  content: '';
+  position: absolute;
+  left: 15px;
+  bottom: 10px;
+  width: 22px;
+  height: 4px;
+  background: var(--tab-control-colour);
+}
+
+.tab-collection > label:hover,
+.tab-collection > input:focus + label {
+  color: var(--theme-background-colour);
+}
+
+.tab-collection > label:hover::after,
+.tab-collection > input:focus + label::after,
+.tab-collection > input:checked + label::after {
+  background: var(--theme-background-colour);
+}
+
+.tab-collection > input:checked + label {
+  border-color: var(--tab-control-colour);
+  border-bottom: 1px solid #fff;
+  margin-bottom: -1px;
+}
+
+.tab-panel {
+  padding: 30px 0;
+  border-top: 1px solid var(--tab-control-colour);
+}
+
+/* events styles */
 .events {
   list-style-type: none;
 }

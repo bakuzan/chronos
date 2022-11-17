@@ -1,5 +1,6 @@
-ol.events
-    each item in events
-        li.events__item.event
-            div.event__year= item.year
-            div.event__text= item.description
+mixin list_events(items)
+    ol.events
+        each item in items
+            li.events__item.event
+                div.event__year= item.year
+                div.event__text= item.description
