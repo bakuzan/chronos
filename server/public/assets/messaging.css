@@ -1,0 +1,6 @@
+.messages {
+  margin: 10px 0;
+  white-space: pre-line;
+  padding-left: 5px;
+  border-left: 5px solid var(--messages-border-colour);
+}

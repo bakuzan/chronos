@@ -7,7 +7,7 @@ import {
   getDeathsForDate,
   getEventsForDate
 } from './service';
-import { getOrdinalSuffix } from './utils';
+import { getDateForRequest, getOrdinalSuffix } from './utils';
 import { monthNames } from './constants';
 
 dotenv.config();
@@ -21,20 +21,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Endpoints
 app.get('/', (req: Request, res: Response) => {
-  const today = new Date();
-  const date = today.getDate();
-  const dateWithOrd = getOrdinalSuffix(date);
-  const monthIndex = today.getMonth();
+  const model = getDateForRequest(req.query);
+  const date = model.date;
+
+  const day = date.getDate();
+  const dateWithOrd = getOrdinalSuffix(day);
+  const monthIndex = date.getMonth();
   const monthName = monthNames[monthIndex];
   const month = monthIndex + 1;
 
-  const births = getBirthsForDate(month, date);
-  const deaths = getDeathsForDate(month, date);
-  const events = getEventsForDate(month, date);
+  const births = getBirthsForDate(month, day);
+  const deaths = getDeathsForDate(month, day);
+  const events = getEventsForDate(month, day);
 
   res.render('index', {
     title: 'On this day',
     header: `On ${dateWithOrd} ${monthName}`,
+    message: model.message,
+    day,
+    month,
     births,
     deaths,
     events

@@ -1,0 +1,14 @@
+block append styles 
+    link(rel="stylesheet", href="/assets/form.css")
+
+div.inputs
+    form(action="/", method="get" autocomplete="off") 
+        div.input
+            input(type="number", name="day", id="day" min="1" max="31" value= day)
+            label(for="day") Day
+
+        div.input
+            input(type="number", name="month", id="month" min="1" max="12" value= month)
+            label(for="month") Month
+
+        button(type="submit") Go

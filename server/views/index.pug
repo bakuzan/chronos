@@ -1,7 +1,11 @@
 extends layout
+include events.pug
 
 block content
-    h2= header
+    header.header
+        h2= header
+        include form.pug
+    include messaging.pug
     div.tab-collection
         input(class='tab-control', id='tab1', type='radio', name='tabs',aria-controls='events', checked)
         label(class='tab-button', for='tab1') Events
@@ -13,7 +17,6 @@ block content
         label(class='tab-button', for='tab3') Deaths
 
         div.tab-panels
-            include events.pug
             section.tab.event-tab#events
                 +list_events(events)
             section.tab.birth-tab#births

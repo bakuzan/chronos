@@ -1,6 +1,12 @@
 :root {
+  --background-colour: #f2f4f6;
   --theme-background-colour: #66023c;
   --theme-colour-colour: #fff;
+
+  --input-border-colour: var(--theme-background-colour);
+  --button-hover-colour: #ffd700;
+
+  --messages-border-colour: #f00;
 
   --tab-control-colour: #282c35;
 }
@@ -8,6 +14,7 @@
 body {
   font-size: 18px;
   font-family: 'Lucida Console', 'Consolas', monospace;
+  background: var(--background-colour);
   min-height: 100vh;
   margin: 0;
 }
@@ -15,6 +22,17 @@ body {
 main {
   height: 100%;
   padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 550px) {
+  .header {
+    flex-direction: column;
+  }
 }
 
 .site-title {
@@ -73,32 +91,11 @@ main {
 
 .tab-collection > input:checked + label {
   border-color: var(--tab-control-colour);
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid transparent;
   margin-bottom: -1px;
 }
 
 .tab-panel {
   padding: 30px 0;
   border-top: 1px solid var(--tab-control-colour);
-}
-
-/* events styles */
-.events {
-  list-style-type: none;
-}
-
-.event {
-  display: flex;
-  padding: 5px 0;
-  margin-bottom: 16px;
-}
-
-.event__year {
-  display: flex;
-  min-width: 60px;
-  padding: 5px;
-  background-color: var(--theme-background-colour);
-  color: var(--theme-colour-colour);
-  margin-right: 10px;
-  box-sizing: border-box;
 }

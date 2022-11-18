@@ -1,0 +1,38 @@
+.inputs {
+  padding: 10px 0;
+}
+
+.inputs form {
+  display: flex;
+}
+
+.input {
+  display: flex;
+  flex-direction: column-reverse;
+  min-width: 100px;
+  margin: 0 5px 5px 0;
+}
+
+.input input {
+  background-color: inherit;
+  font-size: 1.25rem;
+  border: none;
+  border-bottom: 1px solid var(--input-border-colour);
+}
+
+.input label {
+  font-size: 1.25rem;
+}
+
+button {
+  background-color: var(--theme-background-colour);
+  color: var(--theme-colour-colour);
+  border: none;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+button:focus,
+button:hover {
+  box-shadow: 1px 0px 2px 1px var(--button-hover-colour);
+}
