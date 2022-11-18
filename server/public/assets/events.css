@@ -1,5 +1,6 @@
 .events {
   list-style-type: none;
+  padding-inline-start: 15px;
 }
 
 .event {

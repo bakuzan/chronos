@@ -4,11 +4,11 @@ block append styles
 div.inputs
     form(action="/", method="get" autocomplete="off") 
         div.input
-            input(type="number", name="day", id="day" min="1" max="31" value= day)
+            input(type="number", name="day", id="day", min="1", max="31", required, value= day)
             label(for="day") Day
 
         div.input
-            input(type="number", name="month", id="month" min="1" max="12" value= month)
+            input(type="number", name="month", id="month", min="1", max="12", required, value= month)
             label(for="month") Month
 
         button(type="submit") Go
