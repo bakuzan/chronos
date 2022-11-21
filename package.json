@@ -7,7 +7,7 @@
     "bin"
   ],
   "bin": {
-    "chronos": "./bin/index.js"
+    "chronos": "./bin/tools/index.js"
   },
   "lint-staged": {
     "{,tools}/**/*.{js,ts}": [
@@ -18,9 +18,9 @@
   "scripts": {
     "clean": "rimraf dist/",
     "copyfiles": "ts-node ./utils/copyfiles.ts",
-    "build:server": "npm run clean && npx tsc --project tsconfig.server.json && npm run copyfiles",
-    "start": "ts-node --project tsconfig.server.json ./server/index.ts",
-    "build:tools": "tsc --project tsconfig.json",
+    "build:server": "npm run clean && npx tsc --project ./server/tsconfig.json && npm run copyfiles",
+    "start": "ts-node --project ./server/tsconfig.json ./server/index.ts",
+    "build:tools": "tsc --project ./tools/tsconfig.json",
     "test": "echo 'Tests not set up!'",
     "pretty": "prettier --write \"{,!(node_modules|bin|dist|coverage)/**/}*.{js,jsx,ts,tsx,json}\"",
     "lint": "eslint \"{,!(node_modules|bin|dist)/**/}*.{js,ts}\" --fix",

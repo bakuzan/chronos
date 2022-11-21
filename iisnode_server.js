@@ -1,1 +1,1 @@
-require(__dirname + '\\dist\\index.js');
+require(__dirname + '\\dist\\server\\index.js');

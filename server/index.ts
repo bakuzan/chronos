@@ -5,6 +5,7 @@ import path from 'path';
 import {
   getBirthsForDate,
   getDeathsForDate,
+  getEventById,
   getEventsForDate
 } from './service';
 import { getDateForRequest, getOrdinalSuffix } from './utils';
@@ -43,6 +44,30 @@ app.get('/', (req: Request, res: Response) => {
     births,
     deaths,
     events
+  });
+});
+
+app.get('/event/:id', (req: Request, res: Response) => {
+  const backUrl = req.headers.referer ?? '/';
+  const item = getEventById(req.params.id);
+
+  if (!item) {
+    res.render('404', {
+      message: `History event could not be found.`,
+      backUrl
+    });
+    return;
+  }
+
+  const dateWithOrd = getOrdinalSuffix(item.day);
+  const monthIndex = item.month - 1;
+  const monthName = monthNames[monthIndex];
+
+  res.render('event', {
+    title: item.description,
+    header: `On ${dateWithOrd} ${monthName} ${item.year}`,
+    item,
+    backUrl
   });
 });
 

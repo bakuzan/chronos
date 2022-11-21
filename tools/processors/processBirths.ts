@@ -1,8 +1,8 @@
 import db from '../database';
 
 import { WikiEvent } from '../types/WikiResponse';
-import { HistoryEvent } from '../types/HistoryEvent';
-import { HistoryEventRelatedLink } from '../types/HistoryEventRelatedLink';
+import { HistoryEvent } from 'types/HistoryEvent';
+import { HistoryEventRelatedLink } from 'types/HistoryEventRelatedLink';
 import baseProcessor from './baseProcessor';
 
 function clearExistingRecords(month: number, day: number) {

@@ -1,0 +1,7 @@
+.return-links {
+  padding: 10px;
+}
+
+.return-links > a {
+  margin-right: 20px;
+}

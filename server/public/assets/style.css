@@ -99,3 +99,12 @@ main {
   padding: 30px 0;
   border-top: 1px solid var(--tab-control-colour);
 }
+
+/* Link styling */
+.link {
+}
+
+.link:focus,
+.link:hover,
+.link:active {
+}

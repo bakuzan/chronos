@@ -1,0 +1,12 @@
+extends layout
+block append styles 
+    link(rel="stylesheet", href="/assets/404.css")
+
+block content
+    header.header
+        h2 404
+    p We're lost in time...
+    include messaging.pug
+    div.return-links
+        a(class="link back", href= backUrl) Back
+        a(class="link home", href="/") Home

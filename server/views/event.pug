@@ -1,0 +1,17 @@
+extends layout
+block append styles 
+    link(rel="stylesheet", href="/assets/event.css")
+
+block content
+    header.header
+        h2= header
+        div
+            a(class="link back", href= backUrl) Back
+    
+    div
+        div.description= item.description
+        h3 Related Links
+        ul.related
+            each link in item.relatedLinks
+                li.related__link
+                    a(class="link related-link", target="_blank", rel="noopener noreferrer nofollow", href= link.url)= link.title
