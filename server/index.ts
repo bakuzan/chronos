@@ -53,6 +53,7 @@ app.get('/event/:id', (req: Request, res: Response) => {
 
   if (!item) {
     res.render('404', {
+      title: `404`,
       message: `History event could not be found.`,
       backUrl
     });

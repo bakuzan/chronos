@@ -2,7 +2,7 @@ import got from 'got';
 
 import { ChronosOptions } from '../constants/ChronosOptions';
 import { DataType } from '../constants/DataType';
-import { WikiResponse } from '../types/WikiResponse';
+import { WikiEvent, WikiResponse } from '../types/WikiResponse';
 
 import { debug } from '../utils/logger';
 import getNextDateValues from '../utils/getNextDateValues';
@@ -14,7 +14,11 @@ import processEvents from './processEvents';
 const DATA_URL_TEMPLATE =
   'https://byabbe.se/on-this-day/{month}/{day}/{type}.json';
 
-async function pullDownData(dataType: DataType, month: number, day: number) {
+async function pullDownData(
+  dataType: DataType,
+  month: number,
+  day: number
+): Promise<WikiResponse> {
   debug(`Pull down ${dataType} for Month: ${month}, Day: ${day}`);
 
   if (!dataType || !month || !day) {
@@ -27,8 +31,7 @@ async function pullDownData(dataType: DataType, month: number, day: number) {
     .replace('{month}', month.toString())
     .replace('{day}', day.toString());
 
-  const response = await got(targetUrl).json();
-  return response as WikiResponse<typeof dataType>;
+  return await got(targetUrl).json();
 }
 
 export default async function processor(opts: ChronosOptions) {
@@ -38,16 +41,21 @@ export default async function processor(opts: ChronosOptions) {
 
   while (first || month !== opts.month || day !== opts.day) {
     const data = await pullDownData(opts.dataType, month, day);
+    const args: [number, number, WikiEvent[]] = [
+      month,
+      day,
+      data[opts.dataType]
+    ];
 
     switch (opts.dataType) {
       case 'births':
-        processBirths(month, day, data.births);
+        processBirths(...args);
         break;
       case 'deaths':
-        processDeaths(month, day, data.deaths);
+        processDeaths(...args);
         break;
       case 'events':
-        processEvents(month, day, data.events);
+        processEvents(...args);
         break;
 
       default:

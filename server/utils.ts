@@ -25,7 +25,7 @@ const daysInMonth = (month: number) =>
   new Date(RANDOM_LEAP_YEAR, month, 0).getDate();
 
 export function getDateForRequest(query: QueryString.ParsedQs): RequestModel {
-  let { month, day } = query;
+  const { month, day } = query;
 
   if (!month || !day) {
     return { date: new Date() };

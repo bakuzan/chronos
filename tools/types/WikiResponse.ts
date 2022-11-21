@@ -11,7 +11,7 @@ export interface WikiEvent {
   wikipedia: WikipediaLink[];
 }
 
-export type WikiResponse<propName extends DataType> = {
+export interface WikiResponse extends Record<DataType, WikiEvent[]> {
   wikipedia: string;
   date: string;
-} & { [key in propName]: WikiEvent[] };
+}
