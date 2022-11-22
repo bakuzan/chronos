@@ -6,7 +6,7 @@ import chalk from 'chalk';
 const copyDirAsync = util.promisify(fse.copy);
 
 const projectRoot = path.resolve(__dirname, '../server');
-const buildFolder = path.resolve(__dirname, '../dist');
+const buildFolder = path.resolve(__dirname, '../dist/server');
 
 async function copyDir(folderName: string) {
   await copyDirAsync(
