@@ -1,6 +1,9 @@
 import QueryString from 'qs';
 import { RequestModel } from './types/RequestModel';
 
+export const resolveId = (id: string | undefined) =>
+  id && id.trim() ? Number(id.trim()) : null;
+
 export function getOrdinalSuffix(i: number) {
   const j = i % 10;
   const k = i % 100;

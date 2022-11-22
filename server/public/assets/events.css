@@ -12,14 +12,15 @@
 .event__year {
   display: flex;
   min-width: 60px;
-  padding: 5px;
   background-color: var(--theme-background-colour);
-  color: var(--theme-colour-colour);
   margin-right: 10px;
-  box-sizing: border-box;
 }
 
 .event-link {
   width: 100%;
   height: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+  color: var(--theme-colour-colour) !important;
+  text-decoration: none !important;
 }

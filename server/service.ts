@@ -1,5 +1,8 @@
 import db from './database';
-import { HistoryEventWithRelatedLinks } from './types/HistoryEventWithRelatedLinks';
+
+import { resolveId } from './utils';
+
+import { EventItemWithRelatedLinks } from './types/EventItemWithRelatedLinks';
 
 export function getBirthsForDate(month: number, day: number) {
   return db
@@ -36,8 +39,8 @@ export function getEventsForDate(month: number, day: number) {
 
 export function getEventById(
   id: string | undefined
-): HistoryEventWithRelatedLinks | null {
-  const itemId = id && id.trim() ? Number(id.trim()) : null;
+): EventItemWithRelatedLinks | null {
+  const itemId = resolveId(id);
 
   if (!itemId) {
     return null;
@@ -55,9 +58,9 @@ export function getEventById(
     const relatedLinks = db
       .prepare(
         `SELECT rl.* 
-           FROM RelatedLinks rl 
+           FROM RelatedLink rl 
            JOIN HistoryEventRelatedLink x ON rl.id = x.relatedLinkId
-          WHERE x.id = ?`
+          WHERE x.historyEventId = ?`
       )
       .all(itemId);
 
@@ -67,4 +70,74 @@ export function getEventById(
   }
 
   return historyEvent;
+}
+
+export function getBirthById(
+  id: string | undefined
+): EventItemWithRelatedLinks | null {
+  const itemId = resolveId(id);
+
+  if (!itemId) {
+    return null;
+  }
+
+  const birthEvent = db
+    .prepare(
+      `SELECT * 
+         FROM Birth 
+        WHERE id = ?`
+    )
+    .get(itemId);
+
+  if (birthEvent) {
+    const relatedLinks = db
+      .prepare(
+        `SELECT rl.* 
+           FROM RelatedLink rl 
+           JOIN BirthRelatedLink x ON rl.id = x.relatedLinkId
+          WHERE x.birthId = ?`
+      )
+      .all(itemId);
+
+    if (relatedLinks) {
+      birthEvent.relatedLinks = relatedLinks;
+    }
+  }
+
+  return birthEvent;
+}
+
+export function getDeathById(
+  id: string | undefined
+): EventItemWithRelatedLinks | null {
+  const itemId = resolveId(id);
+
+  if (!itemId) {
+    return null;
+  }
+
+  const deathEvent = db
+    .prepare(
+      `SELECT * 
+         FROM Death 
+        WHERE id = ?`
+    )
+    .get(itemId);
+
+  if (deathEvent) {
+    const relatedLinks = db
+      .prepare(
+        `SELECT rl.* 
+           FROM RelatedLink rl 
+           JOIN DeathRelatedLink x ON rl.id = x.relatedLinkId
+          WHERE x.deathId = ?`
+      )
+      .all(itemId);
+
+    if (relatedLinks) {
+      deathEvent.relatedLinks = relatedLinks;
+    }
+  }
+
+  return deathEvent;
 }

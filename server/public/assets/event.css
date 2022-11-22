@@ -1,8 +1,7 @@
-.description {
-}
-
-.related {
-}
-
 .related__link {
+  margin-bottom: 5px;
+}
+
+.related-link::after {
+  content: '\1F855';
 }

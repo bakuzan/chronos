@@ -1,10 +1,10 @@
 block append styles 
     link(rel="stylesheet", href="/assets/events.css")
 
-mixin list_events(items)
+mixin list_events(type, items)
     ol.events
         each item in items
             li.events__item.event
                 div.event__year
-                    a(class="link event-link", href="/event/" + item.id)= item.year
+                    a(class="link event-link", href="/" + type + "/" + item.id)= item.year
                 div.event__text= item.description

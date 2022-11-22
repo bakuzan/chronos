@@ -9,6 +9,8 @@
   --messages-border-colour: #f00;
 
   --tab-control-colour: #282c35;
+  --link-colour: #e252ff;
+  --link-hover-colour: #d400ff;
 }
 
 body {
@@ -102,9 +104,13 @@ main {
 
 /* Link styling */
 .link {
+  text-decoration: none;
+  color: var(--link-colour);
 }
 
 .link:focus,
 .link:hover,
 .link:active {
+  text-decoration: underline;
+  color: var(--link-hover-colour);
 }
