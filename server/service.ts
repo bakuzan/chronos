@@ -3,6 +3,7 @@ import db from './database';
 import { resolveId } from './utils';
 
 import { EventItemWithRelatedLinks } from './types/EventItemWithRelatedLinks';
+import { RelatedLink } from './types/RelatedLink';
 
 export function getBirthsForDate(month: number, day: number) {
   return db
@@ -52,7 +53,7 @@ export function getEventById(
          FROM HistoryEvent 
         WHERE id = ?`
     )
-    .get(itemId);
+    .get(itemId) as EventItemWithRelatedLinks;
 
   if (historyEvent) {
     const relatedLinks = db
@@ -62,7 +63,7 @@ export function getEventById(
            JOIN HistoryEventRelatedLink x ON rl.id = x.relatedLinkId
           WHERE x.historyEventId = ?`
       )
-      .all(itemId);
+      .all(itemId) as RelatedLink[];
 
     if (relatedLinks) {
       historyEvent.relatedLinks = relatedLinks;
@@ -87,7 +88,7 @@ export function getBirthById(
          FROM Birth 
         WHERE id = ?`
     )
-    .get(itemId);
+    .get(itemId) as EventItemWithRelatedLinks;
 
   if (birthEvent) {
     const relatedLinks = db
@@ -97,7 +98,7 @@ export function getBirthById(
            JOIN BirthRelatedLink x ON rl.id = x.relatedLinkId
           WHERE x.birthId = ?`
       )
-      .all(itemId);
+      .all(itemId) as RelatedLink[];
 
     if (relatedLinks) {
       birthEvent.relatedLinks = relatedLinks;
@@ -122,7 +123,7 @@ export function getDeathById(
          FROM Death 
         WHERE id = ?`
     )
-    .get(itemId);
+    .get(itemId) as EventItemWithRelatedLinks;
 
   if (deathEvent) {
     const relatedLinks = db
@@ -132,7 +133,7 @@ export function getDeathById(
            JOIN DeathRelatedLink x ON rl.id = x.relatedLinkId
           WHERE x.deathId = ?`
       )
-      .all(itemId);
+      .all(itemId) as RelatedLink[];
 
     if (relatedLinks) {
       deathEvent.relatedLinks = relatedLinks;
