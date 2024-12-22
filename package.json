@@ -17,7 +17,7 @@
   },
   "scripts": {
     "clean": "rimraf dist/",
-    "copyfiles": "ts-node ./utils/copyfiles.ts",
+    "copyfiles": "ts-node --project ./server/tsconfig.json ./utils/copyfiles.ts",
     "build:server": "npm run clean && npx tsc --project ./server/tsconfig.json && npm run copyfiles",
     "start": "ts-node --project ./server/tsconfig.json ./server/index.ts",
     "build:tools": "tsc --project ./tools/tsconfig.json",
